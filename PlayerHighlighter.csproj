@@ -1,0 +1,91 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Target .NET Standard 2.1 – required for MelonLoader on Quest IL2CPP -->
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>9.0</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+
+    <AssemblyName>PlayerHighlighter</AssemblyName>
+    <RootNamespace>PlayerHighlighter</RootNamespace>
+
+    <!-- Output directly into a Mods/ folder sibling to the project -->
+    <OutputPath>$(MSBuildProjectDirectory)\Mods\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <!--
+    ===================================================================
+    REFERENCE PATHS
+    Update BONELAB_PATH to point at your BONELAB installation.
+
+    Quest / Android build:
+      Managed DLLs are pulled from the deobfuscated Il2CppDumper output
+      or from the PC build's Managed folder (structures are identical).
+
+    Typical PC install paths:
+      Steam  : C:\Program Files (x86)\Steam\steamapps\common\BONELAB\BONELAB_Steam_Windows64_Data\Managed
+      Oculus : C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\BONELAB_Steam_Windows64_Data\Managed
+    ===================================================================
+  -->
+  <PropertyGroup>
+    <BONELAB_MANAGED>$(BONELAB_PATH)\BONELAB_Steam_Windows64_Data\Managed</BONELAB_MANAGED>
+    <MELONLOADER_PATH>$(BONELAB_PATH)\MelonLoader</MELONLOADER_PATH>
+  </PropertyGroup>
+
+  <ItemGroup Label="MelonLoader">
+    <Reference Include="MelonLoader">
+      <HintPath>$(MELONLOADER_PATH)\MelonLoader.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(MELONLOADER_PATH)\net6\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="Unity">
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(BONELAB_MANAGED)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(BONELAB_MANAGED)\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>$(BONELAB_MANAGED)\UnityEngine.TextRenderingModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>$(BONELAB_MANAGED)\UnityEngine.IMGUIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="BoneLib">
+    <!-- Download BoneLib from: https://thunderstore.io/c/bonelab/p/gnonme/BoneLib/ -->
+    <Reference Include="BoneLib">
+      <HintPath>$(BONELAB_PATH)\Mods\BoneLib.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup Label="SLZ BONELAB Assemblies">
+    <Reference Include="SLZ.Marrow">
+      <HintPath>$(BONELAB_MANAGED)\SLZ.Marrow.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Optional: LabFusion (soft dependency – included only if present) -->
+    <!--
+    <Reference Include="LabFusion">
+      <HintPath>$(BONELAB_PATH)\Mods\LabFusion.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    -->
+  </ItemGroup>
+
+</Project>
